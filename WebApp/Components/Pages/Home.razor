@@ -1,7 +1,28 @@
 ﻿@page "/"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>File Upload</PageTitle>
 
-<h1>Hello, world!</h1>
+<form onsubmit="SubmitFormAsync">
+    <div>
+        <label for="email">Email</label>
+        <InputText id="email" type="email" @bind-Value="Email" required/>
+    </div>
+    <div>
+        <label for="file">File (.docx only)</label>
+        <InputFile id="file" accept=".docx" @bind="@File" required/>
+    </div>
+    <div>
+        <input type="submit" value="Submit"/>
+    </div>
+</form>
 
-Welcome to your new app.
+@code {
+    private string Email { get; set; } = string.Empty;
+    private IBrowserFile? File { get; set; }
+    private string message { get; set; } = string.Empty;
+
+    private void SubmitFormAsync()
+    {
+        message = "Submited";
+    }
+}
