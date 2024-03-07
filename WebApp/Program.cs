@@ -1,3 +1,5 @@
+using Infrastructure.BlobAccess;
+using Infrastructure.Services;
 using WebApp.Components;
 
 namespace WebApp
@@ -11,6 +13,13 @@ namespace WebApp
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+
+            builder.Services.AddScoped<IBlobStorage>(provider => new BlobStorage(
+                connectionString: builder.Configuration.GetConnectionString("BlobStorageConnection")!,
+                containerName: builder.Configuration["ContainerName"]!
+                )) ;
 
             var app = builder.Build();
 

@@ -1,28 +1,41 @@
 ﻿@page "/"
+@rendermode InteractiveServer
+@inject IBlobStorageService blobStorageService
 
 <PageTitle>File Upload</PageTitle>
 
-<form onsubmit="SubmitFormAsync">
+<div>
     <div>
-        <label for="email">Email</label>
-        <InputText id="email" type="email" @bind-Value="Email" required/>
+        <div class="mt-2">
+            <label for="emailField">Email</label>
+            <input id="emailField" type="text" class="form-control" @bind="@Email" />
+        </div>
+        <div class="mt-2">
+            <label for="fileField">File (.docx only)</label>
+            <InputFile id="fileField" class="form-control" OnChange="@LoadFile" />
+        </div>
+        <div class="d-flex flex-row-reverse">
+            <button @onclick="SubmitFormAsync">Submit</button>
+        </div>
     </div>
-    <div>
-        <label for="file">File (.docx only)</label>
-        <InputFile id="file" accept=".docx" @bind="@File" required/>
-    </div>
-    <div>
-        <input type="submit" value="Submit"/>
-    </div>
-</form>
+</div>
+<p>@counter</p>
+
+
 
 @code {
-    private string Email { get; set; } = string.Empty;
+    private string? Email { get; set; }
     private IBrowserFile? File { get; set; }
-    private string message { get; set; } = string.Empty;
+    private string Message { get; set; }
+    private int counter = 0;
 
-    private void SubmitFormAsync()
+    private void LoadFile(InputFileChangeEventArgs e)
     {
-        message = "Submited";
+        File = e.GetMultipleFiles()[0];
+    }
+
+    private async void SubmitFormAsync()
+    {
+        await blobStorageService.UploadFileToStorageAsync(File!.OpenReadStream(), File!.Name, Email!);
     }
 }
