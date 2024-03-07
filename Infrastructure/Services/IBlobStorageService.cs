@@ -8,6 +8,6 @@ namespace Infrastructure.Services
 {
     public interface IBlobStorageService
     {
-        public Task UploadFileToStorageAsync(Stream file, string originalName, string email);
+        public Task UploadFileToStorageAsync(Stream? file, string? originalName, string? email);
     }
 }

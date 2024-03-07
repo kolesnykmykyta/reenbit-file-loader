@@ -8,34 +8,39 @@
     <div>
         <div class="mt-2">
             <label for="emailField">Email</label>
-            <input id="emailField" type="text" class="form-control" @bind="@Email" />
+            <input id="emailField" type="email" class="form-control" @bind="@Email" required/>
         </div>
         <div class="mt-2">
             <label for="fileField">File (.docx only)</label>
-            <InputFile id="fileField" class="form-control" OnChange="@LoadFile" />
+            <InputFile id="fileField" class="form-control" OnChange="@LoadFile" required/>
         </div>
         <div class="d-flex flex-row-reverse">
             <button @onclick="SubmitFormAsync">Submit</button>
         </div>
     </div>
 </div>
-<p>@counter</p>
-
+<p>@Message</p>
 
 
 @code {
     private string? Email { get; set; }
     private IBrowserFile? File { get; set; }
-    private string Message { get; set; }
-    private int counter = 0;
+    private string? Message { get; set; }
 
     private void LoadFile(InputFileChangeEventArgs e)
     {
         File = e.GetMultipleFiles()[0];
     }
 
-    private async void SubmitFormAsync()
+    private async Task SubmitFormAsync()
     {
-        await blobStorageService.UploadFileToStorageAsync(File!.OpenReadStream(), File!.Name, Email!);
+        try{
+            await blobStorageService.UploadFileToStorageAsync(File?.OpenReadStream(), File?.Name, Email);
+            Message = "Successfully submitted the file!";
+        }
+        catch (Exception ex)
+        {
+            Message = $"Error occured while uploading the file: {ex.Message}";
+        }
     }
 }
