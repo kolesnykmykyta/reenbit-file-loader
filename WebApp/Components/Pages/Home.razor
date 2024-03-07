@@ -5,37 +5,37 @@
 <PageTitle>File Upload</PageTitle>
 
 <div>
-    <div>
+    <EditForm Model="@unit" OnSubmit="SubmitFormAsync" FormName="file-upload">
         <div class="mt-2">
-            <label for="emailField">Email</label>
-            <input id="emailField" type="email" class="form-control" @bind="@Email" required/>
+            <label for="email">Email</label>
+            <InputText id="email" type="email" @bind-Value="@unit.Email" required></InputText>
         </div>
         <div class="mt-2">
-            <label for="fileField">File (.docx only)</label>
-            <InputFile id="fileField" class="form-control" OnChange="@LoadFile" required/>
+            <label for="file">File (.docx only)</label>
+            <InputFile id="file" class="form-control" OnChange="LoadFile" required></InputFile>
         </div>
         <div class="d-flex flex-row-reverse">
-            <button @onclick="SubmitFormAsync">Submit</button>
+            <button type="submit">Submit</button>
         </div>
-    </div>
+    </EditForm>
 </div>
 <p>@Message</p>
 
 
 @code {
-    private string? Email { get; set; }
-    private IBrowserFile? File { get; set; }
     private string? Message { get; set; }
+    private BlobFileUnit unit = new();
 
     private void LoadFile(InputFileChangeEventArgs e)
     {
-        File = e.GetMultipleFiles()[0];
+        unit.File = e.GetMultipleFiles()[0];
     }
 
-    private async Task SubmitFormAsync()
+    private async Task SubmitFormAsync(EditContext context)
     {
+        BlobFileUnit contextUnit = (BlobFileUnit)context.Model;
         try{
-            await blobStorageService.UploadFileToStorageAsync(File?.OpenReadStream(), File?.Name, Email);
+            await blobStorageService.UploadFileToStorageAsync(contextUnit.File?.OpenReadStream(), contextUnit.File?.Name, contextUnit.Email);
             Message = "Successfully submitted the file!";
         }
         catch (Exception ex)
