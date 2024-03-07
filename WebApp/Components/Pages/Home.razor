@@ -4,30 +4,32 @@
 
 <PageTitle>File Upload</PageTitle>
 
-<div>
-    <EditForm Model="@unit" OnSubmit="SubmitFormAsync" FormName="file-upload">
+<div class="justify-content-center">
+    <EditForm Model="@unit" OnSubmit="SubmitFormAsync" FormName="file-upload" class="form-group w-50" style="margin:auto">
         <div class="mt-2">
             <label for="email">Email</label>
-            <InputText id="email" type="email" @bind-Value="@unit.Email" required></InputText>
+            <InputText id="email" type="email" @bind-Value="@unit.Email" @oninput="@ClearMessage" class="form-control" required></InputText>
         </div>
         <div class="mt-2">
             <label for="file">File (.docx only)</label>
-            <InputFile id="file" class="form-control" OnChange="LoadFile" required></InputFile>
+            <InputFile id="file" OnChange="LoadFile" class="form-control" required></InputFile>
         </div>
         <div class="d-flex flex-row-reverse">
-            <button type="submit">Submit</button>
+            <button type="submit" class="btn btn-primary mt-4">Submit</button>
         </div>
     </EditForm>
 </div>
-<p>@Message</p>
+<div class="alert alert-@MessageStyle w-75 justify-content-center mt-5" style="display: flex; margin: auto">@Message</div>
 
 
 @code {
-    private string? Message { get; set; }
+    private string? Message { get; set; } = "s";
     private BlobFileUnit unit = new();
+    private string? MessageStyle;
 
     private void LoadFile(InputFileChangeEventArgs e)
     {
+        ClearMessage();
         unit.File = e.GetMultipleFiles()[0];
     }
 
@@ -36,11 +38,19 @@
         BlobFileUnit contextUnit = (BlobFileUnit)context.Model;
         try{
             await blobStorageService.UploadFileToStorageAsync(contextUnit.File?.OpenReadStream(), contextUnit.File?.Name, contextUnit.Email);
+            MessageStyle = "success";
             Message = "Successfully submitted the file!";
         }
         catch (Exception ex)
         {
+            MessageStyle = "danger";
             Message = $"Error occured while uploading the file: {ex.Message}";
         }
+    }
+
+    private void ClearMessage()
+    {
+        Message = null;
+        MessageStyle = null;
     }
 }
