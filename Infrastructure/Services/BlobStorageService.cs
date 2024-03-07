@@ -30,7 +30,7 @@ namespace Infrastructure.Services
                 throw new ArgumentNullException(nameof(file));
             }
 
-            string newName = $"{Path.GetRandomFileName()}_{originalName}.docx";
+            string newName = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}_{originalName}";
             Dictionary<string, string> metadata = new Dictionary<string, string>
             {
                 {"email", email },
