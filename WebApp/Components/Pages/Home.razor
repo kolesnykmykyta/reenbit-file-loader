@@ -39,7 +39,8 @@
         BlobFileUnit contextUnit = (BlobFileUnit)context.Model;
 
         try{
-            await blobStorageService.UploadFileToStorageAsync(contextUnit.File?.OpenReadStream(), contextUnit.File?.Name, contextUnit.Email);
+            using Stream? streamFile = contextUnit.File?.OpenReadStream();
+            await blobStorageService.UploadFileToStorageAsync(streamFile, contextUnit.File?.Name, contextUnit.Email);
             ChangeMessage("Successfully submitted the file!", "success");
         }
         catch (Exception ex)
