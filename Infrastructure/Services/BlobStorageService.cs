@@ -10,7 +10,6 @@ namespace Infrastructure.Services
     public class BlobStorageService : IBlobStorageService
     {
         private readonly IBlobStorage _blobStorage;
-        private static readonly List<string> AllowedExtensions = new(){ ".docx", ".DOCX" };
 
         public BlobStorageService(IBlobStorage blobStorage)
         {
@@ -31,7 +30,7 @@ namespace Infrastructure.Services
             {
                 throw new ArgumentException("Email is null, empty or whitespace", nameof(email));
             }
-            if (!AllowedExtensions.Contains(Path.GetExtension(originalName))){
+            if (!Path.GetExtension(originalName).ToLower().Equals(".docx")){
                 throw new ArgumentException("File extension is not .docx", nameof(file));
             }
 
