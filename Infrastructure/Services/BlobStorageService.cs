@@ -18,7 +18,7 @@ namespace Infrastructure.Services
 
         public async Task UploadFileToStorageAsync(Stream? file, string? originalName, string? email)
         {
-            if (file == null || file.Length == 0)
+            if (file == null)
             {
                 throw new ArgumentNullException(nameof(file));
             }
