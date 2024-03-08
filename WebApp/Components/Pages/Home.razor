@@ -25,7 +25,7 @@
 @code {
     private string? Message { get; set; }
     private BlobFileUnit unit = new();
-    private string? MessageStyle;
+    private string? MessageStyle { get; set; }
 
     private void LoadFile(InputFileChangeEventArgs e)
     {
@@ -35,22 +35,28 @@
 
     private async Task SubmitFormAsync(EditContext context)
     {
+        ChangeMessage("Uploading the file...", "info");
         BlobFileUnit contextUnit = (BlobFileUnit)context.Model;
+
         try{
             await blobStorageService.UploadFileToStorageAsync(contextUnit.File?.OpenReadStream(), contextUnit.File?.Name, contextUnit.Email);
-            MessageStyle = "success";
-            Message = "Successfully submitted the file!";
+            ChangeMessage("Successfully submitted the file!", "success");
         }
         catch (Exception ex)
         {
-            MessageStyle = "danger";
-            Message = $"Error occured while uploading the file: {ex.Message}";
+            ChangeMessage($"Error occured while uploading the file: {ex.Message}", "danger");
+            return;
         }
     }
 
     private void ClearMessage()
     {
-        Message = null;
-        MessageStyle = null;
+        ChangeMessage(null, null);
+    }
+
+    private void ChangeMessage(string? message, string? messageStyle)
+    {
+        this.Message = message;
+        this.MessageStyle = messageStyle;
     }
 }
