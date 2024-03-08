@@ -5,6 +5,7 @@
 
 # Azure deployment files
 profile.arm.json
+.config
 
 # Appsettings
 appsettings.json
