@@ -14,5 +14,9 @@ namespace Infrastructure.BlobAccess
         public string GenerateSasToken(string? fileName, string? accessKey, int expireTime);
 
         public BlobProperties GetBlobMetadata(string? fileName);
+
+        public string StorageName { get; }
+
+        public string ContainerName { get; }
     }
 }

@@ -21,6 +21,22 @@ namespace Infrastructure.BlobAccess
             _containerClient = _serviceClient.GetBlobContainerClient(containerName);
         }
 
+        public string StorageName
+        {
+            get
+            {
+                return _serviceClient.AccountName;
+            }
+        }
+
+        public string ContainerName
+        {
+            get
+            {
+                return _containerClient.Name;
+            }
+        }
+
         public async Task UploadFileAsync(Stream file, string fileName, Dictionary<string, string>? metadata = null)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(fileName);
