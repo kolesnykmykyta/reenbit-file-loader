@@ -1,4 +1,5 @@
 ﻿using Infrastructure.BlobAccess;
+using Infrastructure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
