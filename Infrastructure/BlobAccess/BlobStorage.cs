@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.BlobAccess
 {
+    /// <summary>
+    /// Provides access to the specified container in the Azure storage.
+    /// </summary>
     public class BlobStorage : IBlobStorage
     {
         private readonly BlobServiceClient _serviceClient;
@@ -21,6 +24,9 @@ namespace Infrastructure.BlobAccess
             _containerClient = _serviceClient.GetBlobContainerClient(containerName);
         }
 
+        /// <summary>
+        /// Returns the name of the Azure storage.
+        /// </summary>
         public string StorageName
         {
             get
@@ -29,6 +35,9 @@ namespace Infrastructure.BlobAccess
             }
         }
 
+        /// <summary>
+        /// Returns the name of the Azure container.
+        /// </summary>
         public string ContainerName
         {
             get
@@ -37,6 +46,12 @@ namespace Infrastructure.BlobAccess
             }
         }
 
+        /// <summary>
+        /// Uploads provided file to the Azure storage.
+        /// </summary>
+        /// <param name="file">File as a Stream object.</param>
+        /// <param name="fileName">Name of the file which is used in the storage.</param>
+        /// <param name="metadata">Metadata of the file as a Dictionary object.</param>
         public async Task UploadFileAsync(Stream file, string fileName, Dictionary<string, string>? metadata = null)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(fileName);
@@ -48,7 +63,13 @@ namespace Infrastructure.BlobAccess
             await blobClient.UploadAsync(file, options);
         }
 
-        public string GenerateSasToken(string? fileName, string? accesKey, int expireTime)
+        /// <summary>
+        /// Generates SAS token for the file.
+        /// </summary>
+        /// <param name="fileName">Name of the needed file.</param>
+        /// <param name="accessKey">Key for the access to the Azure storage.</param>
+        /// <param name="expireTime">Expire time of SAS the token (in seconds).</param>
+        public string GenerateSasToken(string? fileName, string? accessKey, int expireTime)
         {
             string storageName = _serviceClient.AccountName;
             string containerName = _containerClient.Name;
@@ -61,12 +82,17 @@ namespace Infrastructure.BlobAccess
             };
             builder.SetPermissions(BlobSasPermissions.Read);
 
-            StorageSharedKeyCredential credential = new(storageName, accesKey);
+            StorageSharedKeyCredential credential = new(storageName, accessKey);
             string sasToken = builder.ToSasQueryParameters(credential).ToString();
 
             return sasToken;
         }
 
+        /// <summary>
+        /// Provides the metadata of the file.
+        /// </summary>
+        /// <param name="fileName">Name of the needed file.</param>
+        /// <returns>Metadata of the file as a Dictionary object.</returns>
         public IDictionary<string, string> GetBlobMetadata(string? fileName)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(fileName);

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Common.SmtpClientWrapper
 {
+    /// <summary>
+    /// Wraps SmtpClient to make its usage in DI containers and unit tests possible.
+    /// </summary>
     public class SmtpClientWrapper : ISmtpClientWrapper
     {
         private readonly SmtpClient _smtpClient;
@@ -22,6 +25,10 @@ namespace Infrastructure.Common.SmtpClientWrapper
             };
         }
 
+        /// <summary>
+        /// Invokes wrapped SmtpClient method to send the message.
+        /// </summary>
+        /// <param name="message">Email message.</param>
         public void Send(MailMessage message)
         {
             _smtpClient.Send(message);

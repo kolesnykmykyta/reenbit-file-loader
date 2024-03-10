@@ -10,8 +10,14 @@ using Infrastructure.Services.Interfaces;
 
 namespace Infrastructure.Services
 {
+    /// <summary>
+    /// Provides methods for working with emails.
+    /// </summary>
     public class EmailService : IEmailService
     {
+        /// <summary>
+        /// Contains SmtpClient, which is used to send emails.
+        /// </summary>
         private readonly ISmtpClientWrapper _smtpClient;
 
         public EmailService(ISmtpClientWrapper smtpClient)
@@ -19,6 +25,14 @@ namespace Infrastructure.Services
             _smtpClient = smtpClient;
         }
 
+        /// <summary>
+        /// Sends email according to the arguments.
+        /// </summary>
+        /// <param name="receiver">Receiver of the email.</param>
+        /// <param name="sender">Sender of the email.</param>
+        /// <param name="subject">Email subject.</param>
+        /// <param name="message">Email body.</param>
+        /// <exception cref="ArgumentException">Thrown when the receiver or sender either null or invalid.</exception>
         public void SendEmail(string? receiver, string? sender, string? subject, string? message)
         {
             if (string.IsNullOrWhiteSpace(receiver))
