@@ -22,10 +22,24 @@ namespace Infrastructure.Services
         {
             if (string.IsNullOrWhiteSpace(receiver))
             {
-                throw new ArgumentException("Receiver is null, empty or whitespace", nameof(receiver));
+                throw new ArgumentException("Receiver email is null, empty or whitespace", nameof(receiver));
+            }
+            if (string.IsNullOrEmpty(sender))
+            {
+                throw new ArgumentException("Sender email is null, empty or whitespace", nameof(sender));
             }
 
             MailMessage mailMessage = new MailMessage();
+
+            try
+            {
+                mailMessage.From = new MailAddress(sender!);
+            }
+            catch (FormatException)
+            {
+                throw new ArgumentException("Sender email is not a valid email address", nameof(sender));
+            }
+
             mailMessage.Subject = subject;
             mailMessage.From = new MailAddress(sender!);
             mailMessage.To.Add(receiver);
