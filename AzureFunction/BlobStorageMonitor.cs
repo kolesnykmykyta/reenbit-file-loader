@@ -34,7 +34,7 @@ namespace AzureFunction
 
                 string message = "<html><body>" +
                     "<h2>Link to your file</h2>" +
-                    $"<p>File {name} was successully uploaded to the BLOB storage. To get access to your file, use the next link: </p>{fileUrl}." +
+                    $"<p>File {name} was successully uploaded to the BLOB storage. To get access to your file, use the next link: {fileUrl} </p>" +
                     "<p>This link is available for one hour.</p>" +
                     "<hr>" +
                     "<i>.NET Trainee Test Task. Author: Mykyta Kolesnyk.</i>" +
