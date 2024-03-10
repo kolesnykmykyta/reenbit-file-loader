@@ -37,7 +37,8 @@ namespace Infrastructure.Services
                 throw new ArgumentException("File extension is not .docx", nameof(file));
             }
 
-            string newName = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}_{originalName}";
+            string newName = $"{Path.GetFileNameWithoutExtension(Path.GetRandomFileName())}_{originalName}"
+                .Replace(" ", "_");
             Dictionary<string, string> metadata = new Dictionary<string, string>
             {
                 {"email", email },
