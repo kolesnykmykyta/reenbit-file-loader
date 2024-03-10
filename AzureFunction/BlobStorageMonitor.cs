@@ -34,8 +34,10 @@ namespace AzureFunction
 
                 string message = "<html><body>" +
                     "<h2>Link to your file</h2>" +
-                    $"<p>Your file was successully uploaded to the BLOB storage. To get access to your file, use the next link: <br>{fileUrl}." +
-                    "<br>This link is available for one hour.</p>" +
+                    $"<p>File {name} was successully uploaded to the BLOB storage. To get access to your file, use the next link: </p>{fileUrl}." +
+                    "<p>This link is available for one hour.</p>" +
+                    "<hr>" +
+                    "<i>.NET Trainee Test Task. Author: Mykyta Kolesnyk.</i>" +
                     "</body></html>";
 
                 _emailService.SendEmail(receiver, sender, "Link to your file", message);
