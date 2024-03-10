@@ -1,0 +1,12 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "BlobConnectionString": "your-blob-connection-string",
+    "BlobContainerName": "your-container-name",
+    "BlobAccessKey": "your-access-key",
+    "SenderEmail": "your-email",
+    "SenderEmailPassword": "your-email-app-password"
+  }
+}
