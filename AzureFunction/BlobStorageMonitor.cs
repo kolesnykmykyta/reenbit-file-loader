@@ -27,6 +27,7 @@ namespace AzureFunction
             {
                 _logger.LogInformation($"{name} blob processing started.");
                 string accessKey = Environment.GetEnvironmentVariable("BlobAccessKey")!;
+                string sender = Environment.GetEnvironmentVariable("SenderEmail")!;
 
                 string fileUrl = _storageService.GetFileUrl(name, accessKey);
                 string receiver = _storageService.GetBlobMetadata(name, "email");
@@ -37,7 +38,7 @@ namespace AzureFunction
                     "<br>This link is available for one hour.</p>" +
                     "</body></html>";
 
-                _emailService.SendEmail("Link to your file", message, receiver);
+                _emailService.SendEmail(receiver, sender, "Link to your file", message);
 
                 _logger.LogInformation($"Successfully send the email for the {name} blob.");
             }
