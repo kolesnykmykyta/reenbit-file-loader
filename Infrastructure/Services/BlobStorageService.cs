@@ -54,7 +54,7 @@ namespace Infrastructure.Services
                 throw new ArgumentException("File name is null, empty or whitespace", nameof(fileName));
             }
 
-            if (string.IsNullOrEmpty(accessKey))
+            if (string.IsNullOrWhiteSpace(accessKey))
             {
                 throw new ArgumentException("Access key is null, empty or whitespace", nameof(fileName));
             }
