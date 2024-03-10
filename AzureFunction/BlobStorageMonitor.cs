@@ -21,7 +21,7 @@ namespace AzureFunction
         }
 
         [Function(nameof(BlobStorageMonitor))]
-        public async Task Run([BlobTrigger("files-storage/{name}", Connection = "BlobConnectionString")] Stream stream, string name)
+        public void Run([BlobTrigger("files-storage/{name}", Connection = "BlobConnectionString")] Stream stream, string name)
         {
             try
             {
