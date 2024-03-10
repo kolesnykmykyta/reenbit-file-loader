@@ -8,6 +8,6 @@ namespace Infrastructure.Services.Interfaces
 {
     public interface IEmailService
     {
-        public void SendEmail(string? subject, string? message, string? receiver);
+        public void SendEmail(string? receiver, string? sender, string? subject, string? message);
     }
 }

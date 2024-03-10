@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Infrastructure.Services
             _smtpClient = smtpClient;
         }
 
-        public void SendEmail(string? subject, string? message, string? receiver)
+        public void SendEmail(string? receiver, string? sender, string? subject, string? message)
         {
             if (string.IsNullOrWhiteSpace(receiver))
             {
@@ -26,6 +27,7 @@ namespace Infrastructure.Services
 
             MailMessage mailMessage = new MailMessage();
             mailMessage.Subject = subject;
+            mailMessage.From = new MailAddress(sender!);
             mailMessage.To.Add(receiver);
             mailMessage.Body = message;
             mailMessage.IsBodyHtml = true;
