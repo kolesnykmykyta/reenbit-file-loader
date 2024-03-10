@@ -9,6 +9,8 @@ local.settings.json
 # Azure deployment files
 profile.arm.json
 .config
+*.arm.json
+serviceDependencies.blob*
 
 # Appsettings
 appsettings.json
