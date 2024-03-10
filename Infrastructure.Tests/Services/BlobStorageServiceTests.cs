@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Azure.Storage.Blobs.Models;
 using Infrastructure.BlobAccess;
 using Infrastructure.Services;
 using Moq;
@@ -163,6 +164,62 @@ namespace Infrastructure.Tests.Services
             BlobStorageService service = new BlobStorageService(blobStorageMock.Object);
 
             Assert.Throws<InvalidOperationException>(() => service.GetFileUrl("text.docx", "invalidkey"));
+        }
+
+        [Fact]
+        public void GetBlobMetadata_CorrectValues_ReturnsMetadata()
+        {
+            string metadataKey = "key";
+            string expected = "value";
+            var blobStorageMock = new Mock<IBlobStorage>();
+            blobStorageMock.Setup(x => x.GetBlobMetadata(It.IsAny<string>()))
+                .Returns(new Dictionary<string, string>() { { metadataKey, expected } });
+            BlobStorageService service = new BlobStorageService(blobStorageMock.Object);
+
+            string actual = service.GetBlobMetadata("test.json", metadataKey);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData(" ")]
+        public void GetBlobMetadata_InvalidFileName_ThrowsArgumentException(string? fileName)
+        {
+            BlobStorageService service = new BlobStorageService(new Mock<IBlobStorage>().Object);
+            string expectedParamName = "fileName";
+
+            var exception = Assert.Throws<ArgumentException>(() => service.GetBlobMetadata(fileName, "metadata"));
+            var actualParamName = exception.ParamName;
+
+            Assert.Equal(expectedParamName, actualParamName);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData(" ")]
+        public void GetBlobMetadata_InvalidMetadataName_ThrowsArgumentException(string? metadataName)
+        {
+            BlobStorageService service = new BlobStorageService(new Mock<IBlobStorage>().Object);
+            string expectedParamName = "metadataName";
+
+            var exception = Assert.Throws<ArgumentException>(() => service.GetBlobMetadata("test.docx", metadataName));
+            var actualParamName = exception.ParamName;
+
+            Assert.Equal(expectedParamName, actualParamName);
+        }
+
+        [Fact]
+        public void GetBlobMetadata_NotExistingMetadata_ThrowsInvalidOperationException()
+        {
+            var blobStorageMock = new Mock<IBlobStorage>();
+            blobStorageMock.Setup(x => x.GetBlobMetadata(It.IsAny<string>()))
+               .Returns(new Dictionary<string, string>());
+            BlobStorageService service = new BlobStorageService(blobStorageMock.Object);
+
+            Assert.Throws<InvalidOperationException>(() => service.GetBlobMetadata("test.json", "example"));
         }
     }
 }

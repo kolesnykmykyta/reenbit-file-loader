@@ -89,16 +89,17 @@ namespace Infrastructure.Services
             }
 
             IDictionary<string, string> metadata = _blobStorage.GetBlobMetadata(fileName);
-            if (metadata == null)
+
+            string output;
+            try
             {
-                throw new ArgumentException("File with specified name wasn't found", nameof(fileName));
+                output =  metadata[metadataName];
             }
-            if (metadata[metadataName] == null)
-            {
-                throw new InvalidOperationException("File with specified name exists, but needed metadata wasn't found");
+            catch(KeyNotFoundException){
+                throw new InvalidOperationException("Specified metadata value doesn't exist");
             }
 
-            return metadata[metadataName];
+            return output;
         }
     }
 }
