@@ -12,9 +12,9 @@ namespace Infrastructure.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpClientWrapper _smtpClient;
+        private readonly ISmtpClientWrapper _smtpClient;
 
-        public EmailService(SmtpClientWrapper smtpClient)
+        public EmailService(ISmtpClientWrapper smtpClient)
         {
             _smtpClient = smtpClient;
         }
@@ -25,7 +25,7 @@ namespace Infrastructure.Services
             {
                 throw new ArgumentException("Receiver email is null, empty or whitespace", nameof(receiver));
             }
-            if (string.IsNullOrEmpty(sender))
+            if (string.IsNullOrWhiteSpace(sender))
             {
                 throw new ArgumentException("Sender email is null, empty or whitespace", nameof(sender));
             }

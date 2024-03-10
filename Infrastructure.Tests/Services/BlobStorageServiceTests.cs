@@ -191,7 +191,7 @@ namespace Infrastructure.Tests.Services
             string expectedParamName = "fileName";
 
             var exception = Assert.Throws<ArgumentException>(() => service.GetBlobMetadata(fileName, "metadata"));
-            var actualParamName = exception.ParamName;
+            string? actualParamName = exception.ParamName;
 
             Assert.Equal(expectedParamName, actualParamName);
         }
@@ -206,7 +206,7 @@ namespace Infrastructure.Tests.Services
             string expectedParamName = "metadataName";
 
             var exception = Assert.Throws<ArgumentException>(() => service.GetBlobMetadata("test.docx", metadataName));
-            var actualParamName = exception.ParamName;
+            string? actualParamName = exception.ParamName;
 
             Assert.Equal(expectedParamName, actualParamName);
         }
