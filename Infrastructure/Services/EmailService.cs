@@ -5,15 +5,16 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using Infrastructure.Common.SmtpClientWrapper;
 using Infrastructure.Services.Interfaces;
 
 namespace Infrastructure.Services
 {
     public class EmailService : IEmailService
     {
-        private readonly SmtpClient _smtpClient;
+        private readonly SmtpClientWrapper _smtpClient;
 
-        public EmailService(SmtpClient smtpClient)
+        public EmailService(SmtpClientWrapper smtpClient)
         {
             _smtpClient = smtpClient;
         }

@@ -1,4 +1,5 @@
 using Infrastructure.BlobAccess;
+using Infrastructure.Common.SmtpClientWrapper;
 using Infrastructure.Services;
 using Infrastructure.Services.Interfaces;
 using Microsoft.Azure.Functions.Worker;
@@ -14,12 +15,11 @@ var host = new HostBuilder()
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
 
-        services.AddSingleton<SmtpClient>(provider => new SmtpClient("smtp.gmail.com")
-        {
-            Port = 587,
-            Credentials = new NetworkCredential(Environment.GetEnvironmentVariable("SenderEmail"), Environment.GetEnvironmentVariable("SenderEmailPassword")),
-            EnableSsl = true,
-        });
+        services.AddSingleton<ISmtpClientWrapper>(provider => new SmtpClientWrapper(
+            port: 587,
+            credential: new NetworkCredential(Environment.GetEnvironmentVariable("SenderEmail"), Environment.GetEnvironmentVariable("SenderEmailPassword")),
+            enableSsl: true
+            ));
 
         services.AddScoped<IBlobStorage>(provider => new BlobStorage(
             Environment.GetEnvironmentVariable("BlobConnectionString")!,
