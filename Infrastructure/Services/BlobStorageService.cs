@@ -57,7 +57,7 @@ namespace Infrastructure.Services
 
             if (string.IsNullOrWhiteSpace(accessKey))
             {
-                throw new ArgumentException("Access key is null, empty or whitespace", nameof(fileName));
+                throw new ArgumentException("Access key is null, empty or whitespace", nameof(accessKey));
             }
 
             string sasToken;
