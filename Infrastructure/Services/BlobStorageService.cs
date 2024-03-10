@@ -88,7 +88,7 @@ namespace Infrastructure.Services
                 throw new ArgumentException("Metadata name is null, empty or whitespace", nameof(metadataName));
             }
 
-            IDictionary<string, string> metadata = _blobStorage.GetBlobMetadata(fileName).Metadata;
+            IDictionary<string, string> metadata = _blobStorage.GetBlobMetadata(fileName);
             if (metadata == null)
             {
                 throw new ArgumentException("File with specified name wasn't found", nameof(fileName));

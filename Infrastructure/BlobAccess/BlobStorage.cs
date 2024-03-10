@@ -67,11 +67,12 @@ namespace Infrastructure.BlobAccess
             return sasToken;
         }
 
-        public BlobProperties GetBlobMetadata(string? fileName)
+        public IDictionary<string, string> GetBlobMetadata(string? fileName)
         {
             BlobClient blobClient = _containerClient.GetBlobClient(fileName);
+            BlobProperties properties = blobClient.GetProperties();
 
-            return blobClient.GetProperties();
+            return properties.Metadata;
         }
     }
 }
