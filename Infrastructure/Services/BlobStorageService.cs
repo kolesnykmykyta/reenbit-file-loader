@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs.Models;
+﻿using Azure;
+using Azure.Storage.Blobs.Models;
 using Infrastructure.BlobAccess;
 using Infrastructure.Services.Interfaces;
 using System;
@@ -59,7 +60,16 @@ namespace Infrastructure.Services
                 throw new ArgumentException("Access key is null, empty or whitespace", nameof(fileName));
             }
 
-            string sasToken = _blobStorage.GenerateSasToken(fileName, accessKey, 3600);
+            string sasToken;
+            try
+            {
+                sasToken = _blobStorage.GenerateSasToken(fileName, accessKey, 3600);
+            }
+            catch (RequestFailedException)
+            {
+                throw new InvalidOperationException("Provided access key is wrong");
+            }
+
             string storageName = _blobStorage.StorageName;
             string containerName = _blobStorage.ContainerName;
 
